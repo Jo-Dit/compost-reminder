@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>You're signed up!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --green-deep: #2d4a1e;
+            --green-mid:  #4a7c3f;
+            --cream:      #f5f0e8;
+            --warm-white: #fdfaf4;
+            --muted:      #6b7c5e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem 1rem;
+            background-image:
+                radial-gradient(ellipse at 20% 30%, rgba(127,176,105,0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(45,74,30,0.1) 0%, transparent 50%);
+        }
+        .card {
+            background: var(--warm-white);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 40px rgba(45,74,30,0.12);
+            border: 1px solid rgba(127,176,105,0.2);
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        @keyframes pop {
+            from { opacity: 0; transform: scale(0.9); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .check {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: bounce 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        @keyframes bounce {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            color: var(--green-deep);
+            margin-bottom: 0.75rem;
+        }
+        p {
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        .highlight {
+            display: inline-block;
+            background: rgba(127,176,105,0.18);
+            color: var(--green-deep);
+            font-weight: 500;
+            padding: 0.15rem 0.5rem;
+            border-radius: 5px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--green-deep);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: var(--green-mid); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <span class="check">✓</span>
+    <h1>You're all set!</h1>
+    <p>
+        We'll remind you every
+        <span class="highlight" th:text="${day}">Day</span>
+        for your
+        <span class="highlight" th:text="${shift}">shift</span>
+        shift.
+    </p>
+    <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+        You can sign up for another reminder using the button below.
+    </p>
+    <p style="margin-top: 0.75rem;">
+        Check your inbox or phone on your shift day and we'll handle the rest. Thanks for composting!
+    </p>
+    <a href="/" class="back-btn">Sign up for another reminder →</a>
+</div>
+</body>
+</html>
