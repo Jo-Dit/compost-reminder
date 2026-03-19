@@ -50,6 +50,10 @@ public class NotificationService {
     private void sendEmail(String to, String subject, String body) {
         try {
             String apiKey = System.getenv("RESEND_API_KEY");
+            log.info("RESEND_API_KEY present: {}", apiKey != null && !apiKey.isBlank());
+            log.info("Sending email from: {}", fromEmail);
+            log.info("Sending email to: {}, subject: {}", to, subject);
+
             Resend resend = new Resend(apiKey);
             CreateEmailOptions params = CreateEmailOptions.builder()
                     .from(fromEmail)
@@ -57,9 +61,11 @@ public class NotificationService {
                     .subject(subject)
                     .text(body)
                     .build();
-            resend.emails().send(params);
+
+            var response = resend.emails().send(params);
+            log.info("Resend response: {}", response);
         } catch (Exception e) {
-            log.error("Failed to send email to {}: {}", to, e.getMessage());
+            log.error("Failed to send email to {}: {} — full error: ", to, e.getMessage(), e);
         }
     }
 
