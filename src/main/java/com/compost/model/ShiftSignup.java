@@ -2,18 +2,12 @@ package com.compost.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "shift_signups")
-@Getter
-@Setter
-@NoArgsConstructor
 public class ShiftSignup {
 
     @Id
@@ -40,15 +34,37 @@ public class ShiftSignup {
     private LocalDateTime createdAt = LocalDateTime.now();
     private boolean active = true;
 
+    public ShiftSignup() {}
+
+    public Long getId()                  { return id; }
+    public void setId(Long id)           { this.id = id; }
+
+    public String getEmail()             { return email; }
+    public void setEmail(String email)   { this.email = email; }
+
+    public String getPhone()             { return phone; }
+    public void setPhone(String phone)   { this.phone = phone; }
+
+    public Carrier getCarrier()                  { return carrier; }
+    public void setCarrier(Carrier carrier)      { this.carrier = carrier; }
+
+    public ShiftType getShiftType()              { return shiftType; }
+    public void setShiftType(ShiftType shiftType){ this.shiftType = shiftType; }
+
+    public DayOfWeek getDayOfWeek()              { return dayOfWeek; }
+    public void setDayOfWeek(DayOfWeek dayOfWeek){ this.dayOfWeek = dayOfWeek; }
+
+    public LocalDateTime getCreatedAt()          { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt){ this.createdAt = createdAt; }
+
+    public boolean isActive()            { return active; }
+    public void setActive(boolean active){ this.active = active; }
+
     public enum ShiftType {
         MORNING,
         AFTERNOON
     }
 
-    /**
-     * US mobile carriers with their email-to-SMS gateway domains.
-     * SMS is sent by emailing {digits}@{gateway} — no Twilio needed.
-     */
     public enum Carrier {
         VERIZON("Verizon",              "vtext.com"),
         ATT("AT&T",                     "txt.att.net"),
@@ -70,7 +86,6 @@ public class ShiftSignup {
         public String getDisplayName() { return displayName; }
         public String getGateway()     { return gateway; }
 
-        /** Builds the full gateway email, e.g. 5551234567@vtext.com */
         public String toSmsAddress(String phoneNumber) {
             String digits = phoneNumber.replaceAll("[^0-9]", "");
             return digits + "@" + gateway;
