@@ -1,12 +1,13 @@
 package com.compost.service;
 
-import com.resend.Resend;
-import com.resend.services.emails.model.CreateEmailOptions;
-import com.compost.model.ShiftSignup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.compost.model.ShiftSignup;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
 
 /**
  * Sends reminders via:
@@ -62,10 +63,11 @@ public class NotificationService {
                     .text(body)
                     .build();
 
+            log.info("About to call Resend API for: {}", to);
             var response = resend.emails().send(params);
-            log.info("Resend response: {}", response);
+            log.info("Resend full response: {}", response);
         } catch (Exception e) {
-            log.error("Failed to send email to {}: {} — full error: ", to, e.getMessage(), e);
+            log.error("Failed to send email to {}", to, e);
         }
     }
 
