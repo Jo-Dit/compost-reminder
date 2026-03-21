@@ -1,18 +1,22 @@
 package com.compost.service;
 
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.compost.model.ShiftSignup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.compost.model.ShiftSignup;
-import com.resend.Resend;
-import com.resend.services.emails.model.CreateEmailOptions;
-
 /**
  * Sends reminders via:
- *   1. Email — Resend API
- *   2. SMS   — free email-to-SMS gateway via Resend
+ *   1. Email — SendGrid API
+ *   2. SMS   — free email-to-SMS gateway via SendGrid
  */
 @Service
 public class NotificationService {
@@ -50,22 +54,22 @@ public class NotificationService {
 
     private void sendEmail(String to, String subject, String body) {
         try {
-            String apiKey = System.getenv("RESEND_API_KEY");
-            log.info("RESEND_API_KEY present: {}", apiKey != null && !apiKey.isBlank());
+            String apiKey = System.getenv("SENDGRID_API_KEY");
+            log.info("SENDGRID_API_KEY present: {}", apiKey != null && !apiKey.isBlank());
             log.info("Sending email from: {}", fromEmail);
             log.info("Sending email to: {}, subject: {}", to, subject);
 
-            Resend resend = new Resend(apiKey);
-            CreateEmailOptions params = CreateEmailOptions.builder()
-                    .from(fromEmail)
-                    .to(to)
-                    .subject(subject)
-                    .text(body)
-                    .build();
+            Mail mail = new Mail(new Email(fromEmail), subject, new Email(to), new Content("text/plain", body));
 
-            log.info("About to call Resend API for: {}", to);
-            var response = resend.emails().send(params);
-            log.info("Resend full response: {}", response);
+            SendGrid sg = new SendGrid(apiKey);
+            Request request = new Request();
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            log.info("About to call SendGrid API for: {}", to);
+            Response response = sg.api(request);
+            log.info("SendGrid full response: status={}, body={}, headers={}", response.getStatusCode(), response.getBody(), response.getHeaders());
         } catch (Exception e) {
             log.error("Failed to send email to {}", to, e);
         }

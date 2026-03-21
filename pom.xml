@@ -45,11 +45,11 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Email via Resend -->
+        <!-- Email via SendGrid -->
         <dependency>
-            <groupId>com.resend</groupId>
-            <artifactId>resend-java</artifactId>
-            <version>3.1.0</version>
+            <groupId>com.sendgrid</groupId>
+            <artifactId>sendgrid-java</artifactId>
+            <version>4.10.2</version>
         </dependency>
 
         <!-- Validation -->
