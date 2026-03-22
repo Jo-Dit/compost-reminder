@@ -182,7 +182,7 @@
         }
         .toggle-group label:hover { border-color: var(--green-mid); color: var(--green-deep); }
 
-        .day-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4rem; }
+        .day-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem; }
         .day-grid input[type="checkbox"] { display: none; }
         .day-grid label {
             display: flex;
@@ -302,6 +302,9 @@
                 <input type="checkbox" id="day-fri" name="daysOfWeek" value="FRIDAY"
                        th:checked="${signup?.daysOfWeek != null && signup.daysOfWeek.contains(T(java.time.DayOfWeek).FRIDAY)}"/>
                 <label for="day-fri">Fri</label>
+                <input type="checkbox" id="day-sat" name="daysOfWeek" value="SATURDAY"
+                       th:checked="${signup?.daysOfWeek != null && signup.daysOfWeek.contains(T(java.time.DayOfWeek).SATURDAY)}"/>
+                <label for="day-sat">Sat</label>
             </div>
         </div>
 
