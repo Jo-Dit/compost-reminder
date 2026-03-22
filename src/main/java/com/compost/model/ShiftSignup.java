@@ -20,9 +20,6 @@ public class ShiftSignup {
     @Column(length = 20)
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    private Carrier carrier;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private ShiftType shiftType;
@@ -45,9 +42,6 @@ public class ShiftSignup {
     public String getPhone()             { return phone; }
     public void setPhone(String phone)   { this.phone = phone; }
 
-    public Carrier getCarrier()                  { return carrier; }
-    public void setCarrier(Carrier carrier)      { this.carrier = carrier; }
-
     public ShiftType getShiftType()              { return shiftType; }
     public void setShiftType(ShiftType shiftType){ this.shiftType = shiftType; }
 
@@ -65,30 +59,5 @@ public class ShiftSignup {
         AFTERNOON
     }
 
-    public enum Carrier {
-        VERIZON("Verizon",              "vtext.com"),
-        ATT("AT&T",                     "txt.att.net"),
-        TMOBILE("T-Mobile",             "tmomail.net"),
-        BOOST("Boost Mobile",           "sms.myboostmobile.com"),
-        CRICKET("Cricket",              "sms.cricketwireless.net"),
-        METRO("Metro by T-Mobile",      "mymetropcs.com"),
-        SPRINT("Sprint",                "messaging.sprintpcs.com"),
-        US_CELLULAR("US Cellular",      "email.uscc.net");
 
-        private final String displayName;
-        private final String gateway;
-
-        Carrier(String displayName, String gateway) {
-            this.displayName = displayName;
-            this.gateway = gateway;
-        }
-
-        public String getDisplayName() { return displayName; }
-        public String getGateway()     { return gateway; }
-
-        public String toSmsAddress(String phoneNumber) {
-            String digits = phoneNumber.replaceAll("[^0-9]", "");
-            return digits + "@" + gateway;
-        }
-    }
 }

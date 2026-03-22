@@ -14,7 +14,6 @@ public class SignupRequest {
 
     @Size(max = 20)
     private String phone;
-    private ShiftSignup.Carrier carrier;
     private ShiftSignup.ShiftType shiftType;
     private List<DayOfWeek> daysOfWeek = new ArrayList<>();
 
@@ -28,9 +27,6 @@ public class SignupRequest {
         this.phone = (phone != null && !phone.isBlank()) ? phone.trim() : null;
     }
 
-    public ShiftSignup.Carrier getCarrier() { return carrier; }
-    public void setCarrier(ShiftSignup.Carrier carrier) { this.carrier = carrier; }
-
     public ShiftSignup.ShiftType getShiftType() { return shiftType; }
     public void setShiftType(ShiftSignup.ShiftType shiftType) { this.shiftType = shiftType; }
 
@@ -40,9 +36,6 @@ public class SignupRequest {
     }
 
     public boolean hasEmail() { return email != null && !email.isBlank(); }
-
-    /** Phone is valid for SMS only when both number AND carrier are provided */
-    public boolean hasSms() { return phone != null && !phone.isBlank() && carrier != null; }
-
-    public boolean hasContactInfo() { return hasEmail() || hasSms(); }
+    public boolean hasPhone() { return phone != null && !phone.isBlank(); }
+    public boolean hasContactInfo() { return hasEmail() || hasPhone(); }
 }

@@ -24,12 +24,8 @@ public class SignupService {
     public List<ShiftSignup> createSignups(SignupRequest request) {
         // Must have at least one valid contact method
         if (!request.hasContactInfo()) {
-            if (request.getPhone() != null && !request.getPhone().isBlank() && request.getCarrier() == null) {
-                throw new IllegalArgumentException(
-                    "You entered a phone number but didn't select a carrier. Please choose your carrier so we can send you texts, or provide an email instead.");
-            }
             throw new IllegalArgumentException(
-                "Please provide an email address, or a phone number with your carrier selected.");
+                "Please provide an email address or a phone number.");
         }
 
         if (request.getShiftType() == null) {
@@ -44,7 +40,7 @@ public class SignupService {
             boolean emailDup = request.hasEmail() &&
                 repository.existsByEmailAndShiftTypeAndDayOfWeekAndActiveTrue(
                     request.getEmail(), request.getShiftType(), day);
-            boolean smsDup = request.hasSms() &&
+            boolean smsDup = request.hasPhone() &&
                 repository.existsByPhoneAndShiftTypeAndDayOfWeekAndActiveTrue(
                     request.getPhone(), request.getShiftType(), day);
 
@@ -54,8 +50,7 @@ public class SignupService {
 
             ShiftSignup signup = new ShiftSignup();
             signup.setEmail(request.getEmail());
-            signup.setPhone(request.hasSms() ? request.getPhone() : null);
-            signup.setCarrier(request.hasSms() ? request.getCarrier() : null);
+            signup.setPhone(request.getPhone());
             signup.setShiftType(request.getShiftType());
             signup.setDayOfWeek(day);
 

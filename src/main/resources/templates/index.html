@@ -119,20 +119,6 @@
             padding-right: 2.5rem;
         }
 
-        /* Carrier dropdown — hidden until phone number is typed */
-        .carrier-field {
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.3s ease, opacity 0.3s ease, margin-bottom 0.3s ease;
-            margin-bottom: 0;
-        }
-        .carrier-field.visible {
-            max-height: 100px;
-            opacity: 1;
-            margin-bottom: 1.25rem;
-        }
-
         .carrier-hint {
             font-size: 0.78rem;
             color: var(--muted);
@@ -272,25 +258,9 @@
             <label for="phone">Phone number (text message)</label>
             <input type="tel" id="phone" name="phone"
                    placeholder="(555) 000-0000"
-                   th:value="${signup?.phone}"
-                   oninput="toggleCarrier(this.value)"/>
+                   th:value="${signup?.phone}"/>
         </div>
 
-        <!-- Carrier — slides in when phone number is entered -->
-        <div class="carrier-field" id="carrierField">
-            <label for="carrier">Your mobile carrier</label>
-            <select id="carrier" name="carrier">
-                <option value="">— Select your carrier —</option>
-                <option value="VERIZON"   th:selected="${signup?.carrier?.name() == 'VERIZON'}">Verizon</option>
-                <option value="ATT"       th:selected="${signup?.carrier?.name() == 'ATT'}">AT&amp;T</option>
-                <option value="TMOBILE"   th:selected="${signup?.carrier?.name() == 'TMOBILE'}">T-Mobile</option>
-                <option value="BOOST"     th:selected="${signup?.carrier?.name() == 'BOOST'}">Boost Mobile</option>
-                <option value="CRICKET"   th:selected="${signup?.carrier?.name() == 'CRICKET'}">Cricket</option>
-                <option value="METRO"     th:selected="${signup?.carrier?.name() == 'METRO'}">Metro by T-Mobile</option>
-                <option value="SPRINT"    th:selected="${signup?.carrier?.name() == 'SPRINT'}">Sprint</option>
-                <option value="US_CELLULAR" th:selected="${signup?.carrier?.name() == 'US_CELLULAR'}">US Cellular</option>
-            </select>
-        </div>
 
 
         <!-- Shift type -->
@@ -340,22 +310,5 @@
 
 </div>
 
-<script>
-    // Show the carrier dropdown only when a phone number is typed
-    function toggleCarrier(value) {
-        const field = document.getElementById('carrierField');
-        const hasPhone = value.replace(/[^0-9]/g, '').length >= 7;
-        field.classList.toggle('visible', hasPhone);
-        if (!hasPhone) {
-            document.getElementById('carrier').value = '';
-        }
-    }
-
-    // On page load, show carrier if phone was pre-filled (e.g. after validation error)
-    window.addEventListener('DOMContentLoaded', () => {
-        const phone = document.getElementById('phone');
-        if (phone && phone.value) toggleCarrier(phone.value);
-    });
-</script>
 </body>
 </html>
