@@ -43,7 +43,7 @@ public class NotificationService {
         String subject = buildSubject(signup.getShiftType());
 
         if (signup.getEmail() != null) {
-            sendEmail(signup.getEmail(), subject, message + "\n\n— " + clubName);
+            sendEmail(signup.getEmail(), subject, message);
             log.info("Email reminder sent to {}", signup.getEmail());
         }
 
@@ -107,8 +107,7 @@ public class NotificationService {
     }
 
     private String buildSubject(ShiftSignup.ShiftType shiftType) {
-        return String.format("[%s] %s Shift Reminder", clubName,
-            shiftType == ShiftSignup.ShiftType.MORNING ? "Morning" : "Afternoon");
+        return shiftType == ShiftSignup.ShiftType.MORNING ? "Morning Shift Reminder" : "Afternoon Shift Reminder";
     }
 
     private String truncateForSms(String message) {
