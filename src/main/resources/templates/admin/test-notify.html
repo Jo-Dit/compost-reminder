@@ -32,7 +32,7 @@
 </head>
 <body>
     <h1>Test Notifications</h1>
-    <p class="sub">Immediately sends today's reminders to all matching signups.</p>
+    <p class="sub">Sends reminders for <strong th:text="${today}">today</strong> to all matching signups.</p>
 
     <div class="buttons">
         <form method="post" th:action="@{/admin/test-notify}">
