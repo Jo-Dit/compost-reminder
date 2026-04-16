@@ -38,6 +38,7 @@ public class SignupController {
         model.addAttribute("signup", new SignupRequest());
         model.addAttribute("shiftTypes", ShiftSignup.ShiftType.values());
         model.addAttribute("dateWeeks", generateWeekdayDateWeeks());
+        model.addAttribute("today", LocalDate.now());
         return "index";
     }
 
@@ -60,6 +61,7 @@ public class SignupController {
             model.addAttribute("signup", request);
             model.addAttribute("shiftTypes", ShiftSignup.ShiftType.values());
             model.addAttribute("dateWeeks", generateWeekdayDateWeeks());
+            model.addAttribute("today", LocalDate.now());
             return "index";
         }
     }
@@ -70,19 +72,20 @@ public class SignupController {
         return "success";
     }
 
-    /** Returns the next 4 weeks of weekday dates (Mon–Fri), split into groups of 5. */
+    /**
+     * Returns 4 calendar weeks of Mon–Fri dates, starting from the Monday
+     * of the current week. Dates before today remain in the list but will
+     * be greyed out and disabled in the template.
+     */
     private List<List<LocalDate>> generateWeekdayDateWeeks() {
-        List<LocalDate> dates = new ArrayList<>();
-        LocalDate d = LocalDate.now().plusDays(1);
-        while (dates.size() < 20) {
-            if (d.getDayOfWeek() != DayOfWeek.SATURDAY && d.getDayOfWeek() != DayOfWeek.SUNDAY) {
-                dates.add(d);
-            }
-            d = d.plusDays(1);
-        }
+        LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
         List<List<LocalDate>> weeks = new ArrayList<>();
-        for (int i = 0; i < dates.size(); i += 5) {
-            weeks.add(dates.subList(i, i + 5));
+        for (int w = 0; w < 4; w++) {
+            List<LocalDate> week = new ArrayList<>();
+            for (int d = 0; d < 5; d++) {
+                week.add(monday.plusWeeks(w).plusDays(d));
+            }
+            weeks.add(week);
         }
         return weeks;
     }

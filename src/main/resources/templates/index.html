@@ -193,6 +193,13 @@
             border-color: var(--green-light);
         }
         .date-grid label:hover { border-color: var(--green-mid); color: var(--green-deep); }
+        .date-grid label.past {
+            opacity: 0.38;
+            cursor: not-allowed;
+            background: #f0f0ec;
+            border-color: rgba(127,176,105,0.18);
+        }
+        .date-grid label.past:hover { border-color: rgba(127,176,105,0.18); color: var(--muted); }
 
         .submit-btn {
             width: 100%;
@@ -269,8 +276,10 @@
                                th:id="${'date-' + #temporals.format(date, 'yyyy-MM-dd')}"
                                name="dates"
                                th:value="${#temporals.format(date, 'yyyy-MM-dd')}"
-                               th:checked="${signup?.dates != null && signup.dates.contains(date)}"/>
-                        <label th:for="${'date-' + #temporals.format(date, 'yyyy-MM-dd')}">
+                               th:checked="${signup?.dates != null && signup.dates.contains(date)}"
+                               th:disabled="${date.isBefore(today)}"/>
+                        <label th:for="${'date-' + #temporals.format(date, 'yyyy-MM-dd')}"
+                               th:classappend="${date.isBefore(today)} ? 'past'">
                             <span class="date-dow" th:text="${#temporals.format(date, 'EEE')}"></span>
                             <span class="date-md"  th:text="${#temporals.format(date, 'MMM d')}"></span>
                         </label>
