@@ -12,19 +12,12 @@ public class SignupRequest {
     @Size(max = 254)
     private String email;
 
-    @Size(max = 20)
-    private String phone;
     private ShiftSignup.ShiftType shiftType;
     private List<DayOfWeek> daysOfWeek = new ArrayList<>();
 
     public String getEmail() { return email; }
     public void setEmail(String email) {
         this.email = (email != null && !email.isBlank()) ? email.trim() : null;
-    }
-
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) {
-        this.phone = (phone != null && !phone.isBlank()) ? phone.trim() : null;
     }
 
     public ShiftSignup.ShiftType getShiftType() { return shiftType; }
@@ -36,6 +29,5 @@ public class SignupRequest {
     }
 
     public boolean hasEmail() { return email != null && !email.isBlank(); }
-    public boolean hasPhone() { return phone != null && !phone.isBlank(); }
-    public boolean hasContactInfo() { return hasEmail() || hasPhone(); }
+    public boolean hasContactInfo() { return hasEmail(); }
 }

@@ -22,10 +22,9 @@ public class SignupService {
     }
 
     public List<ShiftSignup> createSignups(SignupRequest request) {
-        // Must have at least one valid contact method
         if (!request.hasContactInfo()) {
             throw new IllegalArgumentException(
-                "Please provide an email address or a phone number.");
+                "Please provide an email address.");
         }
 
         if (request.getShiftType() == null) {
@@ -40,17 +39,13 @@ public class SignupService {
             boolean emailDup = request.hasEmail() &&
                 repository.existsByEmailAndShiftTypeAndDayOfWeekAndActiveTrue(
                     request.getEmail(), request.getShiftType(), day);
-            boolean smsDup = request.hasPhone() &&
-                repository.existsByPhoneAndShiftTypeAndDayOfWeekAndActiveTrue(
-                    request.getPhone(), request.getShiftType(), day);
 
-            if (emailDup || smsDup) {
+            if (emailDup) {
                 continue; // skip days already registered
             }
 
             ShiftSignup signup = new ShiftSignup();
             signup.setEmail(request.getEmail());
-            signup.setPhone(request.getPhone());
             signup.setShiftType(request.getShiftType());
             signup.setDayOfWeek(day);
 

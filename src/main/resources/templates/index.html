@@ -92,7 +92,6 @@
         }
 
         input[type="email"],
-        input[type="tel"],
         select {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -119,36 +118,6 @@
             padding-right: 2.5rem;
         }
 
-        .carrier-hint {
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-top: 0.35rem;
-        }
-
-        .or-divider {
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.82rem;
-            margin: -0.5rem 0 1.25rem;
-            position: relative;
-        }
-        .or-divider::before, .or-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: rgba(127,176,105,0.25);
-        }
-        .or-divider::before { left: 0; }
-        .or-divider::after  { right: 0; }
-
-        .contact-note {
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-top: -0.75rem;
-            margin-bottom: 1.25rem;
-        }
 
         .toggle-group { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
         .toggle-group input[type="radio"] { display: none; }
@@ -250,18 +219,6 @@
                    placeholder="you@school.edu"
                    th:value="${signup?.email}"/>
         </div>
-
-        <div class="or-divider">and / or</div>
-
-        <!-- Phone -->
-        <div class="field">
-            <label for="phone">Phone number (text message)</label>
-            <input type="tel" id="phone" name="phone"
-                   placeholder="(555) 000-0000"
-                   th:value="${signup?.phone}"/>
-        </div>
-
-
 
         <!-- Shift type -->
         <div class="field">
