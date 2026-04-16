@@ -2,7 +2,9 @@ package com.compost.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import java.time.DayOfWeek;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,9 @@ public class SignupRequest {
     private String email;
 
     private ShiftSignup.ShiftType shiftType;
-    private List<DayOfWeek> daysOfWeek = new ArrayList<>();
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private List<LocalDate> dates = new ArrayList<>();
 
     public String getEmail() { return email; }
     public void setEmail(String email) {
@@ -23,9 +27,9 @@ public class SignupRequest {
     public ShiftSignup.ShiftType getShiftType() { return shiftType; }
     public void setShiftType(ShiftSignup.ShiftType shiftType) { this.shiftType = shiftType; }
 
-    public List<DayOfWeek> getDaysOfWeek() { return daysOfWeek; }
-    public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek != null ? daysOfWeek : new ArrayList<>();
+    public List<LocalDate> getDates() { return dates; }
+    public void setDates(List<LocalDate> dates) {
+        this.dates = dates != null ? dates : new ArrayList<>();
     }
 
     public boolean hasEmail() { return email != null && !email.isBlank(); }

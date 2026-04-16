@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
  */
 @Controller
 public class SignupController {
+
+    private static final DateTimeFormatter DISPLAY_FMT = DateTimeFormatter.ofPattern("EEE, MMM d");
 
     private final SignupService signupService;
 
@@ -32,6 +37,7 @@ public class SignupController {
     public String showForm(Model model) {
         model.addAttribute("signup", new SignupRequest());
         model.addAttribute("shiftTypes", ShiftSignup.ShiftType.values());
+        model.addAttribute("dateWeeks", generateWeekdayDateWeeks());
         return "index";
     }
 
@@ -43,16 +49,17 @@ public class SignupController {
             Model model) {
         try {
             List<ShiftSignup> saved = signupService.createSignups(request);
-            String days = saved.stream()
-                .map(s -> capitalizeDay(s.getDayOfWeek()))
+            String dates = saved.stream()
+                .map(s -> s.getShiftDate().format(DISPLAY_FMT))
                 .collect(Collectors.joining(", "));
             redirectAttrs.addFlashAttribute("shift", saved.get(0).getShiftType().name().toLowerCase());
-            redirectAttrs.addFlashAttribute("day", days);
+            redirectAttrs.addFlashAttribute("day", dates);
             return "redirect:/success";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("signup", request);
             model.addAttribute("shiftTypes", ShiftSignup.ShiftType.values());
+            model.addAttribute("dateWeeks", generateWeekdayDateWeeks());
             return "index";
         }
     }
@@ -63,9 +70,20 @@ public class SignupController {
         return "success";
     }
 
-
-    private String capitalizeDay(DayOfWeek day) {
-        String name = day.name();
-        return name.charAt(0) + name.substring(1).toLowerCase();
+    /** Returns the next 4 weeks of weekday dates (Mon–Fri), split into groups of 5. */
+    private List<List<LocalDate>> generateWeekdayDateWeeks() {
+        List<LocalDate> dates = new ArrayList<>();
+        LocalDate d = LocalDate.now().plusDays(1);
+        while (dates.size() < 20) {
+            if (d.getDayOfWeek() != DayOfWeek.SATURDAY && d.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                dates.add(d);
+            }
+            d = d.plusDays(1);
+        }
+        List<List<LocalDate>> weeks = new ArrayList<>();
+        for (int i = 0; i < dates.size(); i += 5) {
+            weeks.add(dates.subList(i, i + 5));
+        }
+        return weeks;
     }
 }

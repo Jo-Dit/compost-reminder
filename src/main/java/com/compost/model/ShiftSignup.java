@@ -3,7 +3,7 @@ package com.compost.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,8 +25,7 @@ public class ShiftSignup {
     private ShiftType shiftType;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+    private LocalDate shiftDate;
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private boolean active = true;
@@ -45,8 +44,8 @@ public class ShiftSignup {
     public ShiftType getShiftType()              { return shiftType; }
     public void setShiftType(ShiftType shiftType){ this.shiftType = shiftType; }
 
-    public DayOfWeek getDayOfWeek()              { return dayOfWeek; }
-    public void setDayOfWeek(DayOfWeek dayOfWeek){ this.dayOfWeek = dayOfWeek; }
+    public LocalDate getShiftDate()              { return shiftDate; }
+    public void setShiftDate(LocalDate shiftDate){ this.shiftDate = shiftDate; }
 
     public LocalDateTime getCreatedAt()          { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt){ this.createdAt = createdAt; }

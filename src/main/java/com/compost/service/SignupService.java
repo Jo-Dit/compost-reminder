@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,35 +30,35 @@ public class SignupService {
         if (request.getShiftType() == null) {
             throw new IllegalArgumentException("Please select a shift (Morning or Afternoon).");
         }
-        if (request.getDaysOfWeek() == null || request.getDaysOfWeek().isEmpty()) {
-            throw new IllegalArgumentException("Please select at least one day.");
+        if (request.getDates() == null || request.getDates().isEmpty()) {
+            throw new IllegalArgumentException("Please select at least one date.");
         }
 
         List<ShiftSignup> created = new ArrayList<>();
-        for (DayOfWeek day : request.getDaysOfWeek()) {
+        for (LocalDate date : request.getDates()) {
             boolean emailDup = request.hasEmail() &&
-                repository.existsByEmailAndShiftTypeAndDayOfWeekAndActiveTrue(
-                    request.getEmail(), request.getShiftType(), day);
+                repository.existsByEmailAndShiftTypeAndShiftDateAndActiveTrue(
+                    request.getEmail(), request.getShiftType(), date);
 
             if (emailDup) {
-                continue; // skip days already registered
+                continue; // skip dates already registered
             }
 
             ShiftSignup signup = new ShiftSignup();
             signup.setEmail(request.getEmail());
             signup.setShiftType(request.getShiftType());
-            signup.setDayOfWeek(day);
+            signup.setShiftDate(date);
 
             ShiftSignup saved = repository.save(signup);
-            log.info("Signup saved: id={}, shift={}, day={}, email={}, sms={}",
-                saved.getId(), saved.getShiftType(), saved.getDayOfWeek(),
-                saved.getEmail() != null, saved.getPhone() != null);
+            log.info("Signup saved: id={}, shift={}, date={}, email={}",
+                saved.getId(), saved.getShiftType(), saved.getShiftDate(),
+                saved.getEmail() != null);
             created.add(saved);
         }
 
         if (created.isEmpty()) {
             throw new IllegalArgumentException(
-                "You're already signed up for all selected days on that shift!");
+                "You're already signed up for all selected dates on that shift!");
         }
 
         return created;
