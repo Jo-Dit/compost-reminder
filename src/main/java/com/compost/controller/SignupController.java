@@ -80,7 +80,7 @@ public class SignupController {
     private List<List<LocalDate>> generateWeekdayDateWeeks() {
         LocalDate monday = LocalDate.now().with(DayOfWeek.MONDAY);
         List<List<LocalDate>> weeks = new ArrayList<>();
-        for (int w = 0; w < 4; w++) {
+        for (int w = 0; w < 1; w++) {
             List<LocalDate> week = new ArrayList<>();
             for (int d = 0; d < 5; d++) {
                 week.add(monday.plusWeeks(w).plusDays(d));
